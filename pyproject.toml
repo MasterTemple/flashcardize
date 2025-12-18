@@ -1,0 +1,14 @@
+[project]
+name = "flashcardize"
+version = "0.1.0"
+description = "A Python command-line tool to convert a PDF of flashcards into a print-ready, cut-ready grid."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "argparse>=1.4.0",
+    "pymupdf>=1.26.7",
+]
+
+authors = [
+  { name = "Blake Scampone" }
+]
