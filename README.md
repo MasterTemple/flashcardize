@@ -60,7 +60,7 @@ The script is run from the command line, providing an input PDF and a path for t
 uv run main.py input_cards.pdf output_grid.pdf
 ```
 
-This will create output_grid.pdf with a default paper size of 8.5x11 inches and a 0.5-inch margin.
+This will create output_grid.pdf with a default paper size of 8.5x11 inches and a 0.25-inch margin.
 
 ### 🛠️ All Options & Help
 
@@ -71,7 +71,7 @@ uv run main.py --help
 
 Output:
 
-usage: main.py [-h] [--width WIDTH] [--height HEIGHT] [--margin MARGIN] [--no-cut-lines] [--flip-back] input output
+usage: main.py [-h] [--width WIDTH] [--height HEIGHT] [--margin MARGIN] [--lines {front,back,none,both}] [--flip-back] input output
 
 Create a print-ready PDF grid of flashcards from an input PDF.
 
@@ -84,7 +84,8 @@ options:
   --width WIDTH         Paper width in inches (override).
   --height HEIGHT       Paper height in inches (override).
   --margin MARGIN       Margin in inches.
-  --no-cut-lines        Remove lines for cutting
+  --lines {front,back,none,both}
+                        Where to place cut-lines (if any): front, back, none, both
   --flip-back           Rotate every second sheet by 180° for duplex printing
 ```
 
@@ -100,18 +101,18 @@ uv run main.py my_cards.pdf my_cards_a4.pdf --width 8.27 --height 11.69
 
 #### 2. Smaller Margins
 
-To fit more cards on a page, you can reduce the margins.
+To fit more cards on a page, you can reduce the margins (if your printer supports it).
 
 ```bash
-uv run main.py my_cards.pdf my_cards_tight.pdf --margin 0.25
+uv run main.py my_cards.pdf my_cards_tight.pdf --margin 0.10
 ```
 
-#### 3. Removing Cut Lines
+#### 3. Remove Cut Lines
 
-If you don't want guide lines for cutting, use the --no-cut-lines flag.
+If you don't want guide lines for cutting, use the `--lines none` argument.
 
 ```bash
-uv run main.py my_cards.pdf my_cards_clean.pdf --no-cut-lines
+uv run main.py my_cards.pdf my_cards_clean.pdf --lines none
 ```
 
 #### 4. Flipping Back Sheets

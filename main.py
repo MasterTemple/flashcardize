@@ -1,8 +1,22 @@
 import fitz  # PyMuPDF
 import argparse
 import math
+from enum import StrEnum
 
-def draw_cut_outline(page: fitz.Page, rect: fitz.Rect):
+# Where
+class CutLocation(StrEnum):
+    FRONT = 'front'
+    BACK = 'back'
+    NONE = 'none'
+    BOTH = 'both'
+
+    def front(self) -> bool:
+        return self == CutLocation.BOTH or self == CutLocation.FRONT
+
+    def back(self) -> bool:
+        return self == CutLocation.BOTH or self == CutLocation.BACK
+
+def draw_cut_outline(page: fitz.Page, rect: fitz.Rect) -> None:
     lines = [
         (fitz.Point(rect.x0, rect.y0), fitz.Point(rect.x1, rect.y0)), # top
         (fitz.Point(rect.x0, rect.y1), fitz.Point(rect.x1, rect.y1)), # bottom
@@ -25,8 +39,9 @@ def main():
     parser.add_argument("output", help="Path to the output PDF file.")
     parser.add_argument("--width", type=float, default=None, help="Paper width in inches (override).")
     parser.add_argument("--height", type=float, default=None, help="Paper height in inches (override).")
-    parser.add_argument("--margin", type=float, default=0.5, help="Margin in inches.")
-    parser.add_argument("--no-cut-lines", type=bool, default=False, help="Remove lines for cutting")
+    parser.add_argument("--margin", type=float, default=0.25, help="Margin in inches.")
+    # parser.add_argument("--no-cut-lines", type=bool, default=False, help="Remove lines for cutting")
+    parser.add_argument("--lines", type=CutLocation, default=CutLocation.FRONT, help=f"Where to place cut-lines (if any): {', '.join([a.value for a in CutLocation])}", choices=list(CutLocation))
     parser.add_argument("--flip-back", action="store_true", help="Rotate every second sheet by 180° for duplex printing")
 
     args = parser.parse_args()
@@ -112,7 +127,7 @@ def main():
                 y0 = margin_pt + r * card_h
                 rect = fitz.Rect(x0, y0, x0 + card_w, y0 + card_h)
                 front_page.show_pdf_page(rect, doc, row_fronts[c].number)
-                if not args.no_cut_lines:
+                if args.lines.front():
                     draw_cut_outline(front_page, rect)
 
         # Create back page with mirrored order (reverse columns) and right-aligned for partial rows
@@ -127,7 +142,7 @@ def main():
                 y0 = margin_pt + r * card_h
                 rect = fitz.Rect(x0, y0, x0 + card_w, y0 + card_h)
                 back_page.show_pdf_page(rect, doc, row_backs[i].number)
-                if not args.no_cut_lines:
+                if args.lines.back():
                     draw_cut_outline(back_page, rect)
         if args.flip_back:
             back_page.set_rotation(180)
