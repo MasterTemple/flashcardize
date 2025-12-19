@@ -2,9 +2,13 @@
 
 A Python command-line tool to convert a PDF of flashcards into a print-ready, cut-ready grid. This tool takes a PDF where each flashcard side is its own page and arranges them onto larger sheets, optimized for double-sided (duplex) printing.
 
+---
+
 ## ⛪ Purpose
 
 The goal of this program is to enable local churches and individuals to easily print their own memory verse flashcards.
+
+---
 
 ## 📃 Description
 
@@ -16,9 +20,13 @@ One page contains all the "front" sides of the cards.
 The next page contains all the corresponding "back" sides.
 The layout is intelligently designed for duplex printing. The order of the cards on the back pages is mirrored and offset to ensure that when you print double-sided, each back aligns perfectly with its front, making cutting clean and simple.
 
+---
+
 ### 🗂️ Flashcard Input
 
 ![](./assets/flashcards.png)
+
+---
 
 ### 🗺️ Grid Output
 
@@ -30,6 +38,8 @@ These are hard to see in the screenshot, but if you look closely, they are there
 
 ![](./assets/cut-lines.png)
 
+---
+
 ## 💡 Features
 
 - 🧩 **Automatic Layout:** Automatically determines the optimal number of rows and columns and the best page orientation (portrait or landscape) to fit the most cards per sheet.
@@ -38,6 +48,8 @@ These are hard to see in the screenshot, but if you look closely, they are there
 - 📏 **No Scaling:** Your original flashcard dimensions are preserved. The script only arranges them; it does not stretch or shrink them.
 - ⚙️ **Customizable:** Configure paper size, margins, and whether to include cut lines.
 - 🔁 **Flip Option:** Includes a --flip-back option to rotate every second back-side sheet by 180°, which is useful for some printer configurations.
+
+---
 
 ## 🧰 Requirements
 
@@ -50,9 +62,13 @@ Install the dependency:
 uv add pymupdf argparse
 ```
 
+---
+
 ## 🚀 Usage
 
 The script is run from the command line, providing an input PDF and a path for the output PDF.
+
+---
 
 ### ⚙️ Basic Command
 
@@ -61,6 +77,8 @@ uv run main.py input_cards.pdf output_grid.pdf
 ```
 
 This will create output_grid.pdf with a default paper size of 8.5x11 inches and a 0.25-inch margin.
+
+---
 
 ### 🛠️ All Options & Help
 
@@ -88,6 +106,8 @@ options:
                         Where to place cut-lines (if any): front, back, none, both
   --flip-back           Rotate every second sheet by 180° for duplex printing
 ```
+
+---
 
 ### 🧮 Examples
 
@@ -122,6 +142,8 @@ Some printers duplex by flipping on the short edge. If your backs are upside dow
 ```bash
 uv run main.py my_cards.pdf my_cards_flipped.pdf --flip-back
 ```
+
+---
 
 ## 🧰 How It Works: The Layout Logic
 
@@ -158,6 +180,8 @@ The layout starts with a left margin equal to the width of one card (the empty s
 ```
 
 When you print this double-sided and cut along the lines, Card 1 Front will be perfectly backed by Card 1 Back, and so on.
+
+---
 
 ## 🧠 Acknowledgements
 
